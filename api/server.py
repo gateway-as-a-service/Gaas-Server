@@ -1,3 +1,5 @@
+from flask_cors import CORS
+
 import api.libs.utils
 from flask import Flask, jsonify
 
@@ -9,6 +11,7 @@ from api.routes.devices.devices_actions import GatewaysDevicesActionsView
 from api.routes.gateways.gateways import GatewaysView
 
 app = Flask(SERVER_NAME)
+CORS(app)
 api.libs.utils.register_logger(app)
 
 
