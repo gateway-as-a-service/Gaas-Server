@@ -11,7 +11,7 @@ class GatewaysView(MethodView):
     POST_BODY_REQUIRED_FIELDS = {"uuid", "name", "description", "ip", "port"}
 
     def __init__(self):
-        self.logger = api.server.app.logger
+        api.server.app.logger = api.server.app.logger
 
         self.gateways_service = GatewaysService()
 
@@ -34,7 +34,7 @@ class GatewaysView(MethodView):
         body = request.json
         validation_error_message = self._validate_post_body(body)
         if validation_error_message:
-            self.logger.error(
+            api.server.app.logger.error(
                 "Some error occurred during the validation of the body. Reason: {}"
                     .format(validation_error_message)
             )
@@ -46,8 +46,8 @@ class GatewaysView(MethodView):
         updated_rows = self.gateways_service.update(body["uuid"], body["name"], body["description"], body["ip"],
                                                     body["port"])
         if updated_rows:
-            self.logger.debug("Gateway with uuid {} has already been registered".format(body["uuid"]))
-            self.logger.debug("Updated Gateway info")
+            api.server.app.logger.debug("Gateway with uuid {} has already been registered".format(body["uuid"]))
+            api.server.app.logger.debug("Updated Gateway info")
             response = {
                 "message": "Gateways has been already registered. Update gateway info"
             }
@@ -68,7 +68,7 @@ class GatewaysView(MethodView):
             # TODO: This may happen on a race condition
             return jsonify(response), HTTPStatusCodes.CONFLICT
 
-        self.logger.info("Gateway {} has been registeredu")
+        api.server.app.logger.info("Gateway {} has been registeredu")
         response = {
             "message": "Gateway has been register"
         }

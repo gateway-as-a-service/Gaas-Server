@@ -19,7 +19,6 @@ class GatewaysDevicesActionsView(MethodView):
     }
 
     def __init__(self):
-        self.logger = api.server.app.logger
         self.devices_service = DevicesService()
         self.devices_history_service = DevicesHistoryService()
         self.rules_service = RulesService()
@@ -34,7 +33,7 @@ class GatewaysDevicesActionsView(MethodView):
                 return "All the actions must have their type"
 
             if action["type"] not in self.POST_REQUIRED_FIELDS:
-                self.logger.debug("Received unknown type of action: {}".format(action["type"]))
+                api.server.app.logger.debug("Received unknown type of action: {}".format(action["type"]))
                 continue
 
             missing_fields = self.POST_REQUIRED_FIELDS[action["type"]] - action.keys()
@@ -78,7 +77,7 @@ class GatewaysDevicesActionsView(MethodView):
         body = request.get_json()
         validation_error_message = self._validate_post_body(body)
         if validation_error_message:
-            self.logger.warning(
+            api.server.app.logger.warning(
                 "Some error occurred during the validation of the body. Reason: {}"
                     .format(validation_error_message)
             )

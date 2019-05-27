@@ -14,7 +14,7 @@ class GatewaysDevicesView(MethodView):
     PATCH_BODY_REQUIRED_FIELDS = {"value"}
 
     def __init__(self):
-        self.logger = api.server.app.logger
+        api.server.app.logger = api.server.app.logger
 
         self.devices_service = DevicesService()
         self.gateways_service = GatewaysService()
@@ -40,7 +40,7 @@ class GatewaysDevicesView(MethodView):
     def _retrieve_device(self, gateway_uuid, device_uuid):
         device = self.devices_service.find_device_from_gateway(device_uuid, gateway_uuid)
         if not device:
-            self.logger.warning(
+            api.server.app.logger.warning(
                 "Device {} doesn't exists or it isn't part of gateway {}".format(device_uuid, gateway_uuid)
             )
             response = {
@@ -63,7 +63,7 @@ class GatewaysDevicesView(MethodView):
         body = request.get_json()
         validation_error_message = self._validate_patch_body(body)
         if validation_error_message:
-            self.logger.error(
+            api.server.app.logger.error(
                 "Some error occurred during the validation of the body. Reason: {}".format(validation_error_message)
             )
             response = {
@@ -75,7 +75,7 @@ class GatewaysDevicesView(MethodView):
         gateway_uuid = str(gateway_uuid)
         device = self.devices_service.find_device_from_gateway(device_uuid, gateway_uuid)
         if not device:
-            self.logger.warning(
+            api.server.app.logger.warning(
                 "Device {} doesn't exists or it isn't part of gateway {}".format(device_uuid, gateway_uuid)
             )
 

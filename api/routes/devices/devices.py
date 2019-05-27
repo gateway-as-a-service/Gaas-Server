@@ -39,7 +39,7 @@ class DevicesView(MethodView):
         device = self.devices_service.find_device_from_gateway(device_id, gateway_uuid)
         if device:
             api.server.app.logger.error(
-                "Failed to register the device {} from gateway {} because it has been already registered"
+                "Do not register the device {} from gateway {} because it has been already registered"
                     .format(device_id, gateway_uuid)
             )
             response = {
