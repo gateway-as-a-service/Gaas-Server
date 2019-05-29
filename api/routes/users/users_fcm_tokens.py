@@ -36,7 +36,7 @@ class UsersFcmTokens(MethodView):
             return jsonify(response), HTTPStatusCodes.BAD_REQUEST
 
         fcm_token = body["token"]
-        user_id = 1
+        user_id = "5cef014dbc9e3b3638cde0e8" #TODO Remove the hardcode
         self.user_service.update(user_id, fcm_token=fcm_token)
 
         return jsonify({}), HTTPStatusCodes.NO_CONTENT

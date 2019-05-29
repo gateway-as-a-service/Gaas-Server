@@ -1,3 +1,5 @@
+from bson import ObjectId
+
 import api.server
 from api.libs.utils import MongoUtils
 
@@ -31,7 +33,7 @@ class UserService(object):
         try:
             return self \
                        .users_collection \
-                       .update_one({}, {"$set": new_values}) \
+                       .update_one({"_id": ObjectId(user_id)}, {"$set": new_values}) \
                        .matcher_count > 0
         except Exception as err:
             self.logger.error(
