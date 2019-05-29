@@ -19,6 +19,7 @@ class MongoUtils(object):
     devices_history = database["devices_history"]
     rules = database["rules"]
     rules_history = database["rules_history"]
+    users = database["users"]
 
 
 class FakeLogger(object):

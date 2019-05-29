@@ -20,3 +20,7 @@ MONGO_DB_PASSWORD = os.getenv("MONGO_PASSWORD")
 MONGO_DB_URI = "mongodb+srv://{}:{}@gaasservercluster-drlqv.mongodb.net/GaaS_Server?retryWrites=true" \
     .format(MONGO_DB_USERNAME, MONGO_DB_PASSWORD)
 MONGO_DB_NAME = "GaaS_Server"
+
+FCM_API_KEY = os.getenv("FCM_API_KEY")
+
+print(MONGO_DB_URI)
