@@ -7,25 +7,25 @@ from api.configs.utils import HTTPStatusCodes
 from api.services.users.users_service import UserService
 
 
-class UsersFcmTokens(MethodView):
-    POST_BODY_REQUIRED_FIELDS = {"token"}
+class UsersTokensView(MethodView):
+    PUT_BODY_REQUIRED_FIELDS = {"token"}
 
     def __init__(self):
         self.logger = api.server.app.logger
 
         self.user_service = UserService()
 
-    def _validate_post_body(self, body):
+    def _validate_put_body(self, body):
         if not isinstance(body, dict):
             return "Must provide an object"
 
-        missing_fields = self.POST_BODY_REQUIRED_FIELDS - body.keys()
+        missing_fields = self.PUT_BODY_REQUIRED_FIELDS - body.keys()
         if missing_fields:
             return "Missing fields: {}".format(missing_fields)
 
-    def post(self):
+    def put(self):
         body = request.get_json()
-        validation_error_message = self._validate_post_body(body)
+        validation_error_message = self._validate_put_body(body)
         if validation_error_message:
             self.logger.error(
                 "Some error occurred during the validation of the body. Reason: {}".format(validation_error_message)

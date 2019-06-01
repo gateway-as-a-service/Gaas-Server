@@ -9,6 +9,7 @@ from api.routes.gateways.devices.devices import GatewaysDevicesView
 from api.routes.devices.devices import DevicesView
 from api.routes.devices.devices_actions import GatewaysDevicesActionsView
 from api.routes.gateways.gateways import GatewaysView
+from api.routes.users.users_fcm_tokens import UsersTokensView
 
 app = Flask(SERVER_NAME)
 CORS(app)
@@ -24,6 +25,7 @@ devices_view = DevicesView.as_view("DevicesView")
 gateways_view = GatewaysView.as_view("GatewaysView")
 gateways_devices_actions_view = GatewaysDevicesActionsView.as_view("GatewaysDevicesActionsView")
 gateways_devices_view = GatewaysDevicesView.as_view("GatewaysDevicesView")
+users_view = UsersTokensView.as_view("UsersView")
 
 app.add_url_rule(
     rule="/api/{}/devices".format(SERVER_API_VERSION),
@@ -56,6 +58,12 @@ app.add_url_rule(
     rule="/api/{}/gateways/<uuid:gateway_uuid>/devices/<uuid:device_uuid>".format(SERVER_API_VERSION),
     view_func=gateways_devices_view,
     methods=["GET", "PATCH", ],
+)
+
+app.add_url_rule(
+    rule="/api/{}/users/tokens".format(SERVER_API_VERSION),
+    view_func=users_view,
+    methods=["PUT", ],
 )
 
 if __name__ == '__main__':
