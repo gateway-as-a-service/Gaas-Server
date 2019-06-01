@@ -112,7 +112,7 @@ class GatewaysDevicesActionsView(MethodView):
         for action in performed_actions:
             if action["type"] == ACTIONS_TYPES.CHANGE_VALUE:
                 notification = self._get_device_action_notification(gateway_uuid, action)
-                if not action:
+                if not notification:
                     api.server.app.logger.error(
                         "Device with {} from gateway {} wasn't found"
                             .format(gateway_uuid, action["device"])
