@@ -79,7 +79,8 @@ class GatewaysDevicesActionsView(MethodView):
         self.rules_history_service.insert_multiple(rules_history)
 
     def _get_device_action_notification(self, gateway_uuid, action):
-        device = self.devices_service.find_device_from_gateway(gateway_uuid, action["device"])
+        device_uuid = action["device"]
+        device = self.devices_service.find_device_from_gateway(device_uuid, gateway_uuid)
         if not device:
             return None
 
