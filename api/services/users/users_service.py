@@ -7,8 +7,6 @@ from api.libs.utils import MongoUtils
 class UserService(object):
 
     def __init__(self):
-        self.logger = api.server.app.logger
-
         self.users_collection = MongoUtils.users
 
     def create(self, user):
@@ -18,8 +16,19 @@ class UserService(object):
                 .insert_one(user) \
                 .inserted_id
         except Exception as err:
-            self.logger.error("Failed to create the user. Reason: {}".format(err))
+            api.server.app.logger.error(
+                "Failed to create the user. Reason: {}".format(err)
+            )
             return None
+
+    def find(self, _id):
+        try:
+            return self.users_collection.find_one({"_id": ObjectId(_id)})
+        except Exception as err:
+            api.server.app.logger.error(
+                "Failed to search after user with _id {}. Reason: {}"
+                    .format(_id, err)
+            )
 
     def update(self, user_id, **kwargs):
         new_values = {}
@@ -27,7 +36,7 @@ class UserService(object):
             new_values["fcm_token"] = kwargs["fcm_token"]
 
         if not new_values:
-            self.logger.info("No values provided")
+            api.server.app.logger.info("No values provided")
             return True
 
         try:
@@ -36,7 +45,7 @@ class UserService(object):
                        .update_one({"_id": ObjectId(user_id)}, {"$set": new_values}) \
                        .matcher_count > 0
         except Exception as err:
-            self.logger.error(
+            api.server.app.logger.error(
                 "Failed to update the user with the new values {}. Reason: {}"
                     .format(new_values, err)
             )
