@@ -116,7 +116,7 @@ class GatewaysDevicesActionsView(MethodView):
                 if not notification:
                     api.server.app.logger.error(
                         "Device with {} from gateway {} wasn't found"
-                            .format(gateway_uuid, action["device"])
+                            .format(action["device"], gateway_uuid)
                     )
                     continue
 
