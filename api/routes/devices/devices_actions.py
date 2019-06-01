@@ -80,7 +80,7 @@ class GatewaysDevicesActionsView(MethodView):
 
     def _get_device_action_notification(self, gateway_uuid, action):
         device_uuid = action["device"]
-        device = self.devices_service.find_device_from_gateway(device_uuid, gateway_uuid)
+        device = self.devices_service.find_device(device_uuid)
         if not device:
             return None
 

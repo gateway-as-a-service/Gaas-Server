@@ -19,6 +19,18 @@ class DevicesService(object):
             self.logger.error(err)
             return None
 
+    def find_device(self, device_uuid):
+        try:
+            return self \
+                .devices_collection \
+                .find_one({"id": device_uuid})
+        except Exception as err:
+            self.logger.error(
+                "Failed to retrieve the device {} . Reason"
+                    .format(device_uuid, err), exc_info=True
+            )
+            return None
+
     def find_from_gateway(self, gateway_uuid):
         try:
             return self.devices_collection \
