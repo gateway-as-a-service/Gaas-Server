@@ -181,7 +181,7 @@ class GatewaysDevicesActionsView(MethodView):
         self._update_devices_values(performed_actions[ACTIONS_TYPES.CHANGE_VALUE], str(gateway_uuid))
         self._update_rule_triggered(performed_actions[ACTIONS_TYPES.RULE_TRIGGERED], str(gateway_uuid))
 
-        self._send_notifications(gateway_uuid, performed_actions)
+        self._send_notifications(gateway_uuid, body)
 
         response = {
             "message": "Actions has been registered"
