@@ -24,3 +24,16 @@ class FcmService(object):
             click_action=message["click_action"], data_message=data
         )
         self.logger.info("FCM push notification result: {}".format(result))
+
+
+if __name__ == '__main__':
+    fcm_service = FcmService()
+    fcm_service.push_notification(
+        [
+            "fBRaSPjeSzo:APA91bHQyFyPXgBCQU1SCjugkG9Er9Z7Or7bVNNjCsUm-qg71nOpv1i79feFQkkM9ZF_KMSqEBjU2ymDwowISJoJs7NJkJnzuON5JPZHGHl0AI3S5s3ohFxucp7WgAcRbrQ9qqp1eDOB"
+        ],
+        {
+            "id": 1,
+            "value": 22,
+        }
+    )

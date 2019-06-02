@@ -43,7 +43,7 @@ class UserService(object):
             return self \
                        .users_collection \
                        .update_one({"_id": ObjectId(user_id)}, {"$set": new_values}) \
-                       .matcher_count > 0
+                       .matched_count > 0
         except Exception as err:
             api.server.app.logger.error(
                 "Failed to update the user with the new values {}. Reason: {}"
