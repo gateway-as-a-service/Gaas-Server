@@ -194,7 +194,7 @@ class GatewaysDevicesActionsView(MethodView):
 
         self._send_notifications(gateway_uuid, body)
 
-        with open("out.txt", mode="w+") as file_handler:
+        with open("out.txt", mode="a") as file_handler:
             file_handler.write("{}/n".format(self.AVERAGE_LATENCY))
 
         response = {
