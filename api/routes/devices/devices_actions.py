@@ -1,19 +1,15 @@
-import datetime
-import time
+from flask import jsonify
+from flask import request
+from flask.views import MethodView
 
 import api.server
-
-from flask.views import MethodView
-from flask import request
-from flask import jsonify
-
 from api.configs.config import ACTIONS_TYPES
 from api.configs.utils import HTTPStatusCodes
 from api.services.fcm_service import FcmService
-from api.services.gateways.gateways_devices_service import DevicesService
 from api.services.gateways.gateways_devices_history_service import DevicesHistoryService
-from api.services.gateways.gateways_rules_service import RulesService
+from api.services.gateways.gateways_devices_service import DevicesService
 from api.services.gateways.gateways_rules_history import RulesHistoryService
+from api.services.gateways.gateways_rules_service import RulesService
 from api.services.users.users_service import UserService
 
 
@@ -22,8 +18,6 @@ class GatewaysDevicesActionsView(MethodView):
         ACTIONS_TYPES.RULE_TRIGGERED: {"type", "rule", "timestamp", },
         ACTIONS_TYPES.CHANGE_VALUE: {"type", "device", "value", "timestamp"},
     }
-
-    AVERAGE_LATENCY = 0
 
     def __init__(self):
         self.devices_service = DevicesService()
@@ -173,8 +167,6 @@ class GatewaysDevicesActionsView(MethodView):
             }
             return jsonify(response), HTTPStatusCodes.BAD_REQUEST
 
-        now = time.time()
-        api.server.app.logger.info("Current Average Latency: {}".format(self.AVERAGE_LATENCY))
         api.server.app.logger.info("Devices actions Body: {}".format(body))
         performed_actions = {
             ACTIONS_TYPES.CHANGE_VALUE: [],
@@ -183,9 +175,6 @@ class GatewaysDevicesActionsView(MethodView):
         for action in body:
             if action["type"] == ACTIONS_TYPES.CHANGE_VALUE:
                 performed_actions[ACTIONS_TYPES.CHANGE_VALUE].append(action)
-                latency = now - action["emit_time"]
-                self.AVERAGE_LATENCY = latency if self.AVERAGE_LATENCY == 0 else (self.AVERAGE_LATENCY + latency) / 2
-
             elif action["type"] == ACTIONS_TYPES.RULE_TRIGGERED:
                 performed_actions[ACTIONS_TYPES.RULE_TRIGGERED].append(action)
 
@@ -193,9 +182,6 @@ class GatewaysDevicesActionsView(MethodView):
         self._update_rule_triggered(performed_actions[ACTIONS_TYPES.RULE_TRIGGERED], str(gateway_uuid))
 
         self._send_notifications(gateway_uuid, body)
-
-        with open("out.txt", mode="a") as file_handler:
-            file_handler.write("{}/n".format(self.AVERAGE_LATENCY))
 
         response = {
             "message": "Actions has been registered"
