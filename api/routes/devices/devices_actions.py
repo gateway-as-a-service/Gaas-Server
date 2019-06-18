@@ -174,7 +174,7 @@ class GatewaysDevicesActionsView(MethodView):
             return jsonify(response), HTTPStatusCodes.BAD_REQUEST
 
         now = time.time()
-        api.server.app.logger.info("Current Average Latency: {}", self.AVERAGE_LATENCY)
+        api.server.app.logger.info("Current Average Latency: {}".format(self.AVERAGE_LATENCY))
         api.server.app.logger.info("Devices actions Body: {}".format(body))
         performed_actions = {
             ACTIONS_TYPES.CHANGE_VALUE: [],
