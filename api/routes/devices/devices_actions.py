@@ -1,4 +1,5 @@
 import datetime
+import time
 
 import api.server
 
@@ -172,7 +173,7 @@ class GatewaysDevicesActionsView(MethodView):
             }
             return jsonify(response), HTTPStatusCodes.BAD_REQUEST
 
-        now = datetime.datetime.utcnow().timestamp()
+        now = time.time()
         api.server.app.logger.info("Devices actions Body: {}".format(body))
         performed_actions = {
             ACTIONS_TYPES.CHANGE_VALUE: [],
@@ -192,7 +193,8 @@ class GatewaysDevicesActionsView(MethodView):
 
         self._send_notifications(gateway_uuid, body)
 
-        print("Average LATENCY: ", self.AVERAGE_LATENCY)
+        with open("out.txt", mode="wt") as file_handler:
+            file_handler.write("{}/n".format(self.AVERAGE_LATENCY))
 
         response = {
             "message": "Actions has been registered"
