@@ -1,3 +1,5 @@
+import datetime
+
 import api.server
 
 from flask.views import MethodView
@@ -19,6 +21,8 @@ class GatewaysDevicesActionsView(MethodView):
         ACTIONS_TYPES.RULE_TRIGGERED: {"type", "rule", "timestamp", },
         ACTIONS_TYPES.CHANGE_VALUE: {"type", "device", "value", "timestamp"},
     }
+
+    AVERAGE_LATENCY = 0
 
     def __init__(self):
         self.devices_service = DevicesService()
@@ -122,7 +126,7 @@ class GatewaysDevicesActionsView(MethodView):
 
                 notifications_to_send.append(notification)
 
-            elif action["type"] == ACTIONS_TYPES.CHANGE_VALUE:
+            elif action["type"] == ACTIONS_TYPES.RULE_TRIGGERED:
                 notification = self.rules_service.find(action["rule"])
                 if not notification:
                     api.server.app.logger.error("Rule {} wasn't found".format(action["rule"]))
@@ -168,6 +172,7 @@ class GatewaysDevicesActionsView(MethodView):
             }
             return jsonify(response), HTTPStatusCodes.BAD_REQUEST
 
+        now = datetime.datetime.utcnow().timestamp()
         api.server.app.logger.info("Devices actions Body: {}".format(body))
         performed_actions = {
             ACTIONS_TYPES.CHANGE_VALUE: [],
@@ -176,6 +181,9 @@ class GatewaysDevicesActionsView(MethodView):
         for action in body:
             if action["type"] == ACTIONS_TYPES.CHANGE_VALUE:
                 performed_actions[ACTIONS_TYPES.CHANGE_VALUE].append(action)
+                latency = now - action["emit_time"]
+                self.AVERAGE_LATENCY = latency if self.AVERAGE_LATENCY == 0 else (self.AVERAGE_LATENCY + latency) / 2
+
             elif action["type"] == ACTIONS_TYPES.RULE_TRIGGERED:
                 performed_actions[ACTIONS_TYPES.RULE_TRIGGERED].append(action)
 
@@ -183,6 +191,8 @@ class GatewaysDevicesActionsView(MethodView):
         self._update_rule_triggered(performed_actions[ACTIONS_TYPES.RULE_TRIGGERED], str(gateway_uuid))
 
         self._send_notifications(gateway_uuid, body)
+
+        print("Average LATENCY: ", self.AVERAGE_LATENCY)
 
         response = {
             "message": "Actions has been registered"
