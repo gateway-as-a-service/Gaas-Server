@@ -15,5 +15,7 @@ class GatewayRulesView(MethodView):
     def get(self, gateway_uuid):
         gateway_uuid = str(gateway_uuid)
         rules = self.gateway_rules_service.find_from_gateway(gateway_uuid)
+        for rule in rules:
+            rule["_id"] = str(rule["_id"])
 
         return jsonify(rules), HTTPStatusCodes.OK
