@@ -36,7 +36,7 @@ class RulesService(object):
 
     def update_last_trigger(self):
         try:
-            self.rules_collection.update_many({}, {'last_trigger': time.time()})
+            self.rules_collection.update_many({}, {'$set': {'last_trigger': time.time()}})
         except Exception as err:
             self.logger.error(
                 "Failed to update the trigger time for all rules. Reason: {}".format(err), exc_info=True
