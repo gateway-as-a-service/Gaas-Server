@@ -11,8 +11,6 @@ class GatewaysView(MethodView):
     POST_BODY_REQUIRED_FIELDS = {"uuid", "name", "description", "ip", "port"}
 
     def __init__(self):
-        api.server.app.logger = api.server.app.logger
-
         self.gateways_service = GatewaysService()
 
     def _validate_post_body(self, body):

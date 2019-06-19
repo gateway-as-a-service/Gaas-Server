@@ -34,6 +34,18 @@ class RulesService(object):
                 "Failed to retrieve the rules that involves device {}. Reason: {}".format(devices_ids, err))
             return None
 
+    def find_from_gateway(self, gateway_uuid):
+        criteria = {'gateway_uuid': gateway_uuid}
+
+        try:
+            rules = self.rules_collection.find(criteria) or []
+            return rules
+        except Exception as err:
+            self.logger.error(
+                "Failed to retrieve the rules from gateway {}. Reason: {}"
+                    .format(gateway_uuid, err), exc_info=True
+            )
+
     def update_last_trigger(self):
         try:
             self.rules_collection.update_many({}, {'$set': {'last_trigger': time.time()}})

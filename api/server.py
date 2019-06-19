@@ -8,6 +8,7 @@ from api.libs.exceptions import FailedRequestException
 from api.routes.gateways.devices.devices import GatewaysDevicesView
 from api.routes.devices.devices import DevicesView
 from api.routes.devices.devices_actions import GatewaysDevicesActionsView
+from api.routes.gateways.gateway_rules import GatewayRulesView
 from api.routes.gateways.gateways import GatewaysView
 from api.routes.users.users_fcm_tokens import UsersTokensView
 
@@ -25,6 +26,7 @@ devices_view = DevicesView.as_view("DevicesView")
 gateways_view = GatewaysView.as_view("GatewaysView")
 gateways_devices_actions_view = GatewaysDevicesActionsView.as_view("GatewaysDevicesActionsView")
 gateways_devices_view = GatewaysDevicesView.as_view("GatewaysDevicesView")
+gateways_rules_view = GatewayRulesView.as_view('GatewaysRulesView')
 users_view = UsersTokensView.as_view("UsersView")
 
 app.add_url_rule(
@@ -58,6 +60,12 @@ app.add_url_rule(
     rule="/api/{}/gateways/<uuid:gateway_uuid>/devices/<uuid:device_uuid>".format(SERVER_API_VERSION),
     view_func=gateways_devices_view,
     methods=["GET", "PATCH", ],
+)
+
+app.add_url_rule(
+    rule="/api/{}/gateways/<uuid:gateway_uuid>/rules".format(SERVER_API_VERSION),
+    view_func=gateways_rules_view,
+    methods=["GET"]
 )
 
 app.add_url_rule(
