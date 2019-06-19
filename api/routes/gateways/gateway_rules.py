@@ -21,9 +21,6 @@ class GatewayRulesView(MethodView):
         if not response:
             raise Exception("Failed to communicate with the gateway")
 
-        if not response.status_code != HTTPStatusCodes.CREATED:
-            raise Exception("No 204 from gateway")
-
         return response.json()['_id']
 
     def post(self, gateway_uuid):
