@@ -39,7 +39,7 @@ class RulesService(object):
 
         try:
             rules = self.rules_collection.find(criteria) or []
-            return rules
+            return list(rules)
         except Exception as err:
             self.logger.error(
                 "Failed to retrieve the rules from gateway {}. Reason: {}"
