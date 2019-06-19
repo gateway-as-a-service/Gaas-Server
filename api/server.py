@@ -65,7 +65,7 @@ app.add_url_rule(
 app.add_url_rule(
     rule="/api/{}/gateways/<uuid:gateway_uuid>/rules".format(SERVER_API_VERSION),
     view_func=gateways_rules_view,
-    methods=["GET"]
+    methods=["GET", "POST"]
 )
 app.add_url_rule(
     rule="/api/{}/gateways/<uuid:gateway_uuid>/rules/<string:rule_id>".format(SERVER_API_VERSION),
