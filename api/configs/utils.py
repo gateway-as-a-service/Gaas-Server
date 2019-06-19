@@ -6,7 +6,6 @@ if not os.path.exists(LOGS_FOLDER):
     os.mkdir(LOGS_FOLDER)
 
 
-
 class HTTPStatusCodes(object):
     OK = 200
     CREATED = 201

@@ -12,7 +12,7 @@ class RulesService(object):
         self.rules_collection = MongoUtils.rules
 
     def create(self, rule):
-        rule["_id"] = ObjectId(rule["id"])
+        rule["_id"] = ObjectId(rule["_id"])
         try:
             return self.rules_collection.insert_one(rule).inserted_id
 
