@@ -67,6 +67,11 @@ app.add_url_rule(
     view_func=gateways_rules_view,
     methods=["GET"]
 )
+app.add_url_rule(
+    rule="/api/{}/gateways/<uuid:gateway_uuid>/rules/<string:rule_id>".format(SERVER_API_VERSION),
+    view_func=gateways_rules_view,
+    methods=["PUT"]
+)
 
 app.add_url_rule(
     rule="/api/{}/users/tokens".format(SERVER_API_VERSION),

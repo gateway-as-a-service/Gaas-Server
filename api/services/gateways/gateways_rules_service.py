@@ -12,6 +12,7 @@ class RulesService(object):
         self.rules_collection = MongoUtils.rules
 
     def create(self, rule):
+        rule["_id"] = ObjectId(rule["id"])
         try:
             return self.rules_collection.insert_one(rule).inserted_id
 
@@ -63,6 +64,9 @@ class RulesService(object):
             self.logger.error(
                 "Failed to update the last trigger for rule {}. Reason: {}".format(_id, err), exc_info=True
             )
+
+    def update_rule(self, rule_id, gateway_uuid, ):
+        pass
 
 
 def _create_performance_test_rules(ids: list):
