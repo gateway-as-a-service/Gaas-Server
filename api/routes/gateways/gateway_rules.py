@@ -28,7 +28,7 @@ class GatewayRulesView(MethodView):
 
     def post(self, gateway_uuid):
         rule = request.get_json()
-        gateway = self.gateway_service.find(uuid=gateway_uuid)
+        gateway = self.gateway_service.find(uuid=str(gateway_uuid))
         if not gateway:
             api.server.app.logger.error("Gateway {} don't exist".format(gateway_uuid))
             response = {
