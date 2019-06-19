@@ -31,6 +31,7 @@ class GatewaysService(object):
         if not criteria:
             return None
 
+        print(criteria)
         try:
             return self \
                 .gateways_collection \
