@@ -88,11 +88,38 @@ class DevicesService(object):
         return updated_rows
 
 
+def _get_device_action_notification(gateway_uuid, action):
+    devices_service = DevicesService()
+    device_uuid = action["device"]
+    device = devices_service.find_device_from_gateway(device_uuid, gateway_uuid)
+    if not device:
+        return None
+
+    notification = {
+        "type": "ACTIONS_TYPES.CHANGE_VALUE",
+        "device_info": {
+            "id": action["device"],
+            "name": device["name"],
+            "value": action["value"],
+        }
+    }
+    return notification
+
+
 if __name__ == '__main__':
     devices_service = DevicesService()
-    print(
-        devices_service.find_device_from_gateway(
-            "0a9c8868-5ba4-4b18-bf92-320971118425",
-            "09eb8a54-14cb-49cb-a374-de1da80ffb27"
-        )
-    )
+    # print(
+    #     devices_service.find_device_from_gateway(
+    #         "0a9c8868-5ba4-4b18-bf92-320971118425",
+    #         "09eb8a54-14cb-49cb-a374-de1da80ffb27"
+    #     )
+    # )
+    DEVICE_UUID = "030cd8f1-4334-4643-9c03-1d4d92bcdb61"
+    GATEWAY_UUID = "e1799142-0430-48f4-9b5d-1348591c0bf7"
+    print(devices_service.find_device_from_gateway(DEVICE_UUID, GATEWAY_UUID))
+
+    action = {
+        "device": DEVICE_UUID,
+        "value": "",
+    }
+    print(_get_device_action_notification(GATEWAY_UUID, action))

@@ -12,7 +12,9 @@ class RulesService(object):
         self.rules_collection = MongoUtils.rules
 
     def create(self, rule):
-        rule["_id"] = ObjectId(rule["_id"])
+        if rule.get("_id"):
+            rule["_id"] = ObjectId(rule["_id"])
+
         try:
             return self.rules_collection.insert_one(rule).inserted_id
 
@@ -99,15 +101,23 @@ if __name__ == '__main__':
     rules_service.update_last_trigger()
 
     # DEVICES_UUIDS = [
-    #     'd788f2b1-6080-4570-ae55-ed71eb146a1a', '0273cbca-7a4a-4dca-87db-1268761337e4',
-    #     '6201d03d-640f-4a2e-aed9-9d6dc037f73b', 'b8758601-4726-48ff-9457-87b6240c70ac',
-    #     '7115f32b-c84b-4dbc-9e53-b56476d68fc7', '7e2f23a3-fbea-4843-bc79-0f04b9596abe',
-    #     'ff82767e-6bab-4af7-bfe3-534100f3b2eb', 'a9cc8991-a99a-420f-8865-a29d745631fe',
-    #     'f8bcf0f9-fadb-46fe-a251-472e559e91df', '286d0581-3296-4923-ba90-7bd343bf17e0',
     #     '8730862f-84da-4916-9c82-4889aa768aec', '0dea48da-3f48-4ba4-ab88-9d0f1de41bec',
     #     '9e75730e-c0a8-433d-b8f1-004e8908414a', 'cc367153-3ba2-4e86-b673-002210612094',
     #     '4c77b947-e8d0-49bc-9a92-e0cfa5c45346', 'a4c2c5fc-939e-408f-b1c3-238aa280a4e0',
     #     '3acc2551-e70d-467c-b755-e6b7820dbbfb', 'b99db5ed-9a8a-4684-b21b-18ea21c8baab',
     #     '53486061-90dc-4bac-9afd-7460bac9463f', '83a3f6f8-23bd-4df0-b307-795abbdce7f7'
     # ]
-    # _create_performance_test_rules(DEVICES_UUIDS)
+
+    DEVICES_UUIDS = [
+        '017c257b-01da-48e5-b8e4-e3b2d2f1797b', 'b5c406c8-9d1e-491e-aaeb-a6971dd05135',
+        'c04bdd1e-8e8f-4852-8088-cfa97196031d', 'edd4e981-7155-41ad-8a0f-da4ff8f25033',
+        'adb6c602-43fb-41b4-8c9a-834fd1fcf646', 'ba80f391-df1d-4164-9686-240fa8733ec2',
+        '8a52d240-ebcc-4a5a-82aa-c16879ac136c', '4d364d23-3d3c-4e9a-ab68-67dbe9cebf9b',
+        'b07a0931-5a2b-4a9e-83a9-546c6f55fab3', '1ebed9e6-c948-4bc3-8065-e86aff2f7df4',
+        'b2b9cd9e-1b6b-422a-9475-760684ef8caa', '178a4756-bc30-4266-ba4c-cf861fec14c6',
+        '1eaa0a19-48e8-447d-a10d-76af3fe44532', '22eecd76-dfbe-49a5-970a-75d7b88a513c',
+        '8ae3d31b-e095-46b5-808d-3b9f88fd2f0e', '1a642569-409c-4f02-b54b-8cc3f43ffbc4',
+        'fa5f86ad-3f8a-4202-9eab-f1cbc2766c3b', '55608f1e-5d26-43e6-8d71-f8bf9d3dbb5e',
+        '8bb75926-65f2-4d13-a187-333384507958', '0bfa5246-4346-405f-bcb2-ad30cb4d4211'
+    ]
+    _create_performance_test_rules(DEVICES_UUIDS)

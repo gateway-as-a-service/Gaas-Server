@@ -5,6 +5,7 @@ from flask import Flask, jsonify
 
 from api.configs.config import SERVER_NAME, SERVER_PORT, SERVER_HOST, SERVER_API_VERSION
 from api.libs.exceptions import FailedRequestException
+from api.routes.devices.devices_actions_test import GatewayDevicesActionsViewTest
 from api.routes.gateways.devices.devices import GatewaysDevicesView
 from api.routes.devices.devices import DevicesView
 from api.routes.devices.devices_actions import GatewaysDevicesActionsView
@@ -25,6 +26,7 @@ def handle_failed_request_exception(exception):
 devices_view = DevicesView.as_view("DevicesView")
 gateways_view = GatewaysView.as_view("GatewaysView")
 gateways_devices_actions_view = GatewaysDevicesActionsView.as_view("GatewaysDevicesActionsView")
+gateway_devices_actions_view_test = GatewayDevicesActionsViewTest.as_view("GatewayDevicesActionsViewTest")
 gateways_devices_view = GatewaysDevicesView.as_view("GatewaysDevicesView")
 gateways_rules_view = GatewayRulesView.as_view('GatewaysRulesView')
 users_view = UsersTokensView.as_view("UsersView")
@@ -44,6 +46,11 @@ app.add_url_rule(
 app.add_url_rule(
     rule="/api/{}/gateways/<uuid:gateway_uuid>/devices/actions".format(SERVER_API_VERSION),
     view_func=gateways_devices_actions_view,
+    methods=["POST", ],
+)
+app.add_url_rule(
+    rule="/api/{}/gateways/<uuid:gateway_uuid>/devices/actions/test".format(SERVER_API_VERSION),
+    view_func=gateway_devices_actions_view_test,
     methods=["POST", ],
 )
 
