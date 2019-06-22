@@ -146,13 +146,11 @@ class GatewaysDevicesActionsView(MethodView):
 
         registration_id = user["fcm_token"]
         registrations_ids = [registration_id, ]
+        api.server.app.logger.info(
+            "Sending Notifications: {} ------> {}".format(notifications_to_send, registrations_ids)
+        )
 
-        for notification in notifications_to_send:
-            self.fcm_service.push_notification([registration_id, ], notification)
-            api.server.app.logger.info(
-                "Send notification {} -----> {} "
-                    .format(notification, registrations_ids)
-            )
+        self.fcm_service.push_notification([registration_id, ], notifications_to_send)
 
     def post(self, gateway_uuid):
         body = request.get_json()
