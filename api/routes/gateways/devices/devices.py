@@ -89,4 +89,5 @@ class GatewaysDevicesView(MethodView):
             }
             return jsonify(response), HTTPStatusCodes.NOT_FOUND
 
+        api.server.app.logger.info("Sent message to gateway")
         return jsonify({}), HTTPStatusCodes.NO_CONTENT
