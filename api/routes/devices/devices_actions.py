@@ -127,6 +127,7 @@ class GatewaysDevicesActionsView(MethodView):
                     api.server.app.logger.error("Rule {} wasn't found".format(action["rule"]))
                     continue
 
+                notification.pop("_id", None)
                 notifications_to_send.append(notification)
 
         if not notifications_to_send:
@@ -151,6 +152,15 @@ class GatewaysDevicesActionsView(MethodView):
         )
 
         self.fcm_service.push_notification([registration_id, ], notifications_to_send)
+
+    def _filter_change_value_trigger_with_same_value(self, actions, devices_ids):
+        devices = self.devices_service.find_multiple_devices(devices_ids)
+        device_id_to_value = {device["uuid"]: device["value"] for device in devices}
+        return list(
+            filter(
+                lambda action: action["device"]["value"] != device_id_to_value.get(action["device"]), actions
+            )
+        )
 
     def post(self, gateway_uuid):
         body = request.get_json()
