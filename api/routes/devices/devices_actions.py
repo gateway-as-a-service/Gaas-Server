@@ -122,12 +122,11 @@ class GatewaysDevicesActionsView(MethodView):
                 notifications_to_send.append(notification)
 
             elif action["type"] == ACTIONS_TYPES.RULE_TRIGGERED:
-                notification = self.rules_service.find(action["rule"])
+                notification = self._get_rule_trigger_action_notification(action["rule"])
                 if not notification:
                     api.server.app.logger.error("Rule {} wasn't found".format(action["rule"]))
                     continue
 
-                notification.pop("_id", None)
                 notifications_to_send.append(notification)
 
         if not notifications_to_send:
