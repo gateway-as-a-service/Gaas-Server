@@ -6,7 +6,7 @@ CherryPy==18.1.1
 Click==7.0
 dnspython==1.16.0
 Flask==1.0.2
-Flask-Cors==3.0.7
+Flask-Cors==3.0.9
 idna==2.8
 itsdangerous==1.1.0
 jaraco.functools==2.0
